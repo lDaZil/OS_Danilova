@@ -10,10 +10,11 @@ int main() {
     }
     time_t now;
     if (time(&now) == -1) {
-        printf("Convert time error!");
+        printf("Can't time(&now)!");
         return 1;
     }
     struct tm *sp;
+
     sp = localtime(&now);
     printf("%02d/%02d/%d %02d:%02d:%02d %s\n",
            sp->tm_mday,
