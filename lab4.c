@@ -49,7 +49,7 @@ int main() {
 
     printf("Enter string. End is '.' in the start of line.\n");
 
-    while (gets(line) != NULL) {
+    while (fgets(line, BUFSIZ, stdin) != NULL) {
         if (line[0] == '.') {
             break;
         }
