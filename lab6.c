@@ -161,7 +161,8 @@ int main (int argc, char *argv[]) {
 		exit (1);
 	}
 	exit (0);
-}#include <sys/types.h>
+}
+#include <sys/types.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
