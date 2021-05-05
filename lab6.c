@@ -27,18 +27,20 @@ void createArrayOffsets(int fd, long *fileOffsets, int *lineLength) {
 
 int main(int argc, char *argv[]) {
     long fileOffsets[101];
-    int fd1, fd2, lineNumber, bufSize = 257, lineLength[101] = {-1};
+    int fd1, fd2, lineNumber;
+    int bufSize = 257;
+    int lineLength[101] = {-1};
     char *buf, symbol;
     if ((buf = (char *) malloc(257 * sizeof(char))) == NULL) {
         perror("Error! Buffer's malloc returns NULL");
         exit(1);
     }
     if ((fd1 = open("/dev/tty", O_RDONLY | O_NDELAY)) == -1) {
-        perror("/dev/tty");
+        perror("Can't open '/dev/tty'");
         exit(2);
     }
     if ((fd2 = open(argv[1], O_RDONLY)) == -1) {
-        perror(strcat("Input file - ", argv[1]));
+        perror(strcat("Can't open file - ", argv[1]));
         exit(2);
     }
 
@@ -47,11 +49,11 @@ int main(int argc, char *argv[]) {
     struct pollfd fds;
     fds.fd = fd1;
     fds.events = POLLIN;
-    printf("five seconds to write a line number\n");
+    printf("You have 5 seconds to write a line number: \n");
     while (1) {
         int ret = poll(&fds, 1, 5000);
         if (ret == -1) {
-            perror("poll error");
+            perror("Error!!! Poll doesn't work and return err");
             exit(1);
         } else if (ret == 0) {
             int i = 0;
@@ -67,12 +69,12 @@ int main(int argc, char *argv[]) {
             if (lineNumber == 0) {
                 exit(0);
             } else if (lineNumber < 0 || lineNumber > 100 || lineLength[lineNumber] == -1) {
-                fprintf(stderr, "wrong line number\n");
+                fprintf(stderr, "Wrong line number!!!\n");
             }
             lseek(fd2, fileOffsets[lineNumber], SEEK_SET);
             if (lineLength[lineNumber] > bufSize) {
                 if (realloc(buf, lineLength[lineNumber] * sizeof(char)) == NULL) {
-                    perror("realloc returns NULL");
+                    perror("Error! Realloc returns NULL");
                     exit(1);
                 }
                 bufSize = lineLength[lineNumber];
@@ -80,8 +82,9 @@ int main(int argc, char *argv[]) {
             if (read(fd2, buf, lineLength[lineNumber]) > 0) {
                 write(1, buf, lineLength[lineNumber]);
             } else {
-                fprintf(stderr, "wrong line number\n");
+                fprintf(stderr, "Wrong line number!!!\n");
             }
         }
     }
+}
 }
