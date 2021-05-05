@@ -7,7 +7,7 @@
 #include <sys/time.h>
 #include <poll.h>
 
-#define BUFSIZE 250
+#define BUFSIZE 257
 
 void createArrayOffsets(int fd, long *fileOffsets, int *lineLength) {
     int i = 1, j = 0;
