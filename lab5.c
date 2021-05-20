@@ -73,6 +73,9 @@ int main(int argc, char *argv[]) {
             }
         }
         count = readFile(fileDescriptor, c, bufSize);
+        if (count == -1) {
+            exit(1);    
+        }
     }
     while (printf("Line number : ") && scanf("%d", &lineNumber)) {
         if (lineNumber <= 0) {
